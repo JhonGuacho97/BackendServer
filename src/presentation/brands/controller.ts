@@ -37,5 +37,25 @@ export class BrandController {
         .catch(error => this.handleError(error, res));
 
     }
+    deleteBrands = async (req: Request, res: Response) => {
+
+        const id = req.params.id
+
+        this.brandsServices.deleteBrands(id)
+        .then((data) => res.json(data))
+        .catch(error => this.handleError(error, res));
+
+    }
+
+    updateBrands = async (req: Request, res: Response) => {
+
+        const id = req.params.id;
+        const [error, BrandDto] = CreateBrandDto.create(req.body);
+        if(error) return res.status(400).json({error})
+
+        this.brandsServices.updateBrands(BrandDto!, id)
+        .then((category) => res.json(category))
+        .catch(error => this.handleError(error, res));
+    }
 
 }

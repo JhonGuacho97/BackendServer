@@ -39,4 +39,36 @@ export class BrandsServices {
             throw customErrors.internalServer(`${error}`)
         }
     }
+    async deleteBrands(id: any) {
+
+        try {
+
+            await BrandModels.findByIdAndDelete(id);
+
+            return {
+                status: 'exito al borrar la categoria',
+            }
+
+        } catch (error) {
+            throw customErrors.internalServer(`${error}`)
+        }
+
+    }
+
+    async updateBrands(BrandDto: CreateBrandDto, id: any){
+
+        try {
+
+            const newBrand = await BrandModels.findByIdAndUpdate(id, BrandDto, {new: true})
+
+            return {
+                id: newBrand?.id,
+                name: newBrand?.name,
+                avaliable: newBrand?.avaliable
+            }
+
+        } catch (error) {
+            throw customErrors.internalServer(`${error}`)
+        }
+     }
 }

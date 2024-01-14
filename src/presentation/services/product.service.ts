@@ -30,9 +30,9 @@ export class VehicleServices {
         try {
             
             const cars = await VehiculoModel.find()
-            // .populate('user','-password -_id -__v')
-            // .populate('brand','-_id -__v')
-            // .populate('category','-_id -__v -user');
+            .populate('user','-password -_id -__v')
+            .populate('brand','-_id -__v')
+            .populate('category','-_id -__v -user');
 
             return cars.map( car => ({
                 id: car.id,
