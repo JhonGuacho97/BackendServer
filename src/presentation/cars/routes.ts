@@ -14,6 +14,7 @@ export class productsRoutes {
     const controller = new productsController(vehicleServices);
     
     router.get('/', controller.getProducts);
+    router.get('/search/:key', controller.searchsProducts);
     router.get('/:year/:brand/:state', controller.filterProduct);
     router.post('/',[AuthMiddleware.validateJWT], controller.createProducts);
 

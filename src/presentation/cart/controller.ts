@@ -25,13 +25,22 @@ export class CartShopController {
             ...req.body,
             user: req.body.user.id
         });
-        
         if(error) return res.status(400).json({error});
 
         this.cartshopServide.AddCartShopProduct(cartDto!)
         .then((cart) => res.status(201).json(cart))
         .catch(error => this.handleError(error, res));
 
+    }
+
+    getCartShop = (req: Request, res: Response) => {
+
+        const idUser: string = req.body.user.id
+
+        this.cartshopServide.getCartShop(idUser)
+        .then((cart) => res.json(cart))
+        .catch(error => this.handleError(error, res))
+        
     }
 
 }

@@ -8,13 +8,13 @@ export class productsController {
   private handleError = (error: unknown, res: Response) => {
     if (error instanceof customErrors) {
       return res.status(error.statusCode).json({ error: error.message });
-    }
+    } 
 
     console.log(`${error}`);
 
     return res.status(500).json({ error: "Internal Server Error" });
   };
-
+ 
   createProducts = async (req: Request, res: Response) => {
     const [error, vehicleDto] = CreateVehicleDto.create({
       ...req.body,
@@ -43,4 +43,14 @@ export class productsController {
         .then((data) => res.json(data))
         .catch(error => this.handleError(error, res))
   };
+
+  searchsProducts = (req: Request, res: Response) => {
+    
+    const queryParams = req.params.key
+
+    this.vehicleServices.searchVehicle(queryParams)
+    .then((data) => res.json(data))
+    .catch(error => this.handleError(error, res))
+
+  }
 }

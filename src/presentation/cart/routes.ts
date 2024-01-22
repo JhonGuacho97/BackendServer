@@ -15,6 +15,7 @@ export class cartShopRoutes {
     const controller = new CartShopController(cartService);
     
     router.post('/', [AuthMiddleware.validateJWT] ,controller.createCartShop);
+    router.get('/mycart', [AuthMiddleware.validateJWT] ,controller.getCartShop);
 
     return router;
   }

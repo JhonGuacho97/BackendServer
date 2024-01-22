@@ -29,9 +29,14 @@ export class VehicleServices {
 
         try {
             
-            const cars = await VehiculoModel.find()
-            // .populate('user','-password -_id -__v')
-            // .populate('brand','-_id -__v')
+            const cars = await VehiculoModel.find().populate({
+                path: 'reviews',
+                populate: {
+                    path: 'user',
+                    select: 'name -_id'
+                },
+                select:'-_id'
+            })
             // .populate('category','-_id -__v -user');
 
             return cars.map( car => ({
@@ -42,8 +47,8 @@ export class VehicleServices {
                 model: car.model,
                 price: car.price,
                 description: car.description,
-                user: car.user,
-                category: car.category
+                category: car.category,
+                reviews: car.reviews
             }))
 
         } catch (error) {
@@ -94,12 +99,43 @@ export class VehicleServices {
 
             const filter = await VehiculoModel.find({year: year, brand: brand, 
                                 stateVehicle: stateVehicle});
-
+            console.log(filter);
+            
             return filter;
             
         } catch (error) {
             throw customErrors.internalServer(`${error}`)
         }
+    }
+
+    async searchVehicle(queryParams: any){
+
+        try {
+            const results = await VehiculoModel.aggregate(
+                [
+                    {
+                      $search: {
+                        index: "vehicles",
+                        text: {
+                          query: `${queryParams}`,
+                          path: {
+                            wildcard: "*"
+                          }
+                        }
+                      }
+                    }
+                  ]
+            )
+                  
+            console.log(queryParams);
+        
+
+            return results;
+
+        } catch (error) {
+            throw customErrors.internalServer(`${error}`)
+        }
+
     }
 
 }
