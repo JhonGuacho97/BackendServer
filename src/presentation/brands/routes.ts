@@ -15,6 +15,8 @@ export class brandsRoutes {
     
     router.get('/', controller.getBrands);
     router.post('/',[AuthMiddleware.validateJWT], controller.createBrands);
+    router.delete('/:id', [AuthMiddleware.validateJWT], controller.deleteBrands);
+    router.put('/brand/:id', [AuthMiddleware.validateJWT], controller.updateBrands);
 
     return router;
   }
