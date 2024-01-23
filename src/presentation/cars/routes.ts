@@ -16,6 +16,7 @@ export class productsRoutes {
     router.get('/', controller.getProducts);
     router.get('/search/:key', controller.searchsProducts);
     //router.get('/:year/:brand/:state', controller.filterProduct);
+    router.get('/:id', controller.getProductsByCategory);
     router.post('/',[AuthMiddleware.validateJWT], controller.createProducts);
     router.delete('/:id', [AuthMiddleware.validateJWT], controller.deleteVehicle);
     router.put('/vehicle/:id', [AuthMiddleware.validateJWT], controller.updateVehicle);

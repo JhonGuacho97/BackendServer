@@ -35,6 +35,16 @@ export class productsController {
       .catch((error) => this.handleError(error, res));
   };
 
+  getProductsByCategory = (req: Request, res: Response) => {
+
+    const idVehicle:string = req.params.id
+
+    this.vehicleServices.getProductsByBrand(idVehicle)
+    .then((cars) => res.json(cars))
+    .catch(error => this.handleError(error, res))
+
+  }
+
   deleteVehicle = async (req: Request, res: Response) => {
 
     const id = req.params.id

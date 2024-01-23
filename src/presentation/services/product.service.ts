@@ -3,7 +3,7 @@ import { CreateVehicleDto, FiltersDto, customErrors } from "../../domain";
 
 
 export class VehicleServices {
-
+ 
     constructor(){}
 
     async createProducts(createVehicleDto: CreateVehicleDto) {
@@ -35,7 +35,7 @@ export class VehicleServices {
                     path: 'user',
                     select: 'name -_id'
                 },
-                select:'-_id'
+                select:'-_id -__v'
             })
             // .populate('category','-_id -__v -user');
 
@@ -113,10 +113,10 @@ export class VehicleServices {
 
         try {
             
-            const {year, brand, stateVehicle, minPrice, maxPrice } = filters
+            const { year, brand, stateVehicle, minPrice, maxPrice } = filters
 
             const filterOptions: any = {}
-
+ 
             if(year) filterOptions.year = year
             if(brand) filterOptions.brand = brand
             if(stateVehicle) filterOptions.stateVehicle = stateVehicle
@@ -159,8 +159,7 @@ export class VehicleServices {
                         }
                       }
                     }
-                  ]
-            )
+                ])
                   
             console.log(queryParams);
         
@@ -171,6 +170,21 @@ export class VehicleServices {
             throw customErrors.internalServer(`${error}`)
         }
 
+    }
+
+    async getProductsByBrand(idBrand:string){ 
+
+        try {
+            
+            const vehicleByCategories = await VehiculoModel.find({brand: idBrand})
+
+            if(!vehicleByCategories) throw customErrors.badRequest('No hay resultados')
+
+            return vehicleByCategories;
+
+        } catch (error) {
+            throw customErrors.internalServer(`${error}`)
+        }
     }
 
 }
