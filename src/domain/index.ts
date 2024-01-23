@@ -8,3 +8,4 @@ export * from './dtos/brand/create-brands.dto';
 export * from './dtos/cart/create-cartshop.dto';
 export * from './dtos/review/create-review.dto';
 export * from './dtos/cites/create-cites.dto';
+export * from './dtos/filters/filter.dtos';

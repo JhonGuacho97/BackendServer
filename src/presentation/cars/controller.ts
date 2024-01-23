@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CreateVehicleDto, customErrors } from "../../domain";
+import { CreateVehicleDto, FiltersDto, customErrors } from "../../domain";
 import { VehicleServices } from "../services/product.service";
 
 export class productsController {
@@ -60,14 +60,25 @@ export class productsController {
 
 
 
-  filterProduct = async (req: Request, res: Response) => {
-    const year = req.params.year;
-    const brand = req.params.brand;
-    const state = req.params.state;
-    this.vehicleServices.filterVehicle(year, brand, state)
-      .then((data) => res.json(data))
-      .catch(error => this.handleError(error, res))
-  };
+  // filterProduct = (req: Request, res: Response) => {
+  //   const year = req.params.year;
+  //   const brand = req.params.brand;
+  //   const state = req.params.state;
+  //   this.vehicleServices.filterVehicle(year, brand, state)
+  //     .then((data) => res.json(data))
+  //     .catch(error => this.handleError(error, res))
+  // };
+
+  filtersQueryProducts = (req: Request, res: Response) => {
+
+    const [error, filterDto] = FiltersDto.filter(req.query)
+    if(error) return res.status(400).json(`${error}`)
+
+    this.vehicleServices.filtersQueryVehicle(filterDto!)
+    .then((data) => res.json(data))
+    .catch(error => this.handleError(error, res))
+
+  }
 
   searchsProducts = (req: Request, res: Response) => {
     

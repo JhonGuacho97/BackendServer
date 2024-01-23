@@ -15,10 +15,11 @@ export class productsRoutes {
     
     router.get('/', controller.getProducts);
     router.get('/search/:key', controller.searchsProducts);
-    router.get('/:year/:brand/:state', controller.filterProduct);
+    //router.get('/:year/:brand/:state', controller.filterProduct);
     router.post('/',[AuthMiddleware.validateJWT], controller.createProducts);
     router.delete('/:id', [AuthMiddleware.validateJWT], controller.deleteVehicle);
     router.put('/vehicle/:id', [AuthMiddleware.validateJWT], controller.updateVehicle);
+    router.get('/filters', controller.filtersQueryProducts);
 
     return router;
   }

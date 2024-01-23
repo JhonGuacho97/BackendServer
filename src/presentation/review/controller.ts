@@ -19,7 +19,7 @@ export class ReviewController {
         return res.status(500).json({error: 'Internal Server Error'});
     }
 
-    createReviewVehicle = (req: Request, res: Response) => {
+    createReviewVehicle = async (req: Request, res: Response) => {
 
         const [error, reviewDto] = CreateReviewDto.create(req.body)
         

@@ -1,5 +1,5 @@
 import { VehiculoModel } from "../../data";
-import { CreateVehicleDto, customErrors } from "../../domain";
+import { CreateVehicleDto, FiltersDto, customErrors } from "../../domain";
 
 
 export class VehicleServices {
@@ -76,16 +76,17 @@ export class VehicleServices {
         try {
             
             const newVehicle = await VehiculoModel.findByIdAndUpdate(id, vehicleDto, {new: true});
+            if(!newVehicle) throw customErrors.badRequest('no se encontro este vehiculo')
 
             return {
-                id: newVehicle?.id,
-                state: newVehicle?.stateVehicle,
-                year: newVehicle?.year,
-                brand: newVehicle?.brand,
-                model: newVehicle?.model,
-                price: newVehicle?.price,
-                description: newVehicle?.description,
-                category: newVehicle?.category
+                id: newVehicle.id,
+                state: newVehicle.stateVehicle,
+                year: newVehicle.year,
+                brand: newVehicle.brand,
+                model: newVehicle.model,
+                price: newVehicle.price,
+                description: newVehicle.description,
+                category: newVehicle.category
             }
 
         } catch (error) {
@@ -93,19 +94,53 @@ export class VehicleServices {
         }
     }
 
-    async filterVehicle(year: any, brand: any, stateVehicle: any){
+    // async filterVehicle(year: any, brand: any, stateVehicle: any){
+
+    //     try {
+
+    //         const filter = await VehiculoModel.find({year: year, brand: brand, 
+    //                             stateVehicle: stateVehicle});
+    //         console.log(filter);
+            
+    //         return filter;
+            
+    //     } catch (error) {
+    //         throw customErrors.internalServer(`${error}`)
+    //     }
+    // }
+
+    async filtersQueryVehicle(filters: FiltersDto){
 
         try {
+            
+            const {year, brand, stateVehicle, minPrice, maxPrice } = filters
 
-            const filter = await VehiculoModel.find({year: year, brand: brand, 
-                                stateVehicle: stateVehicle});
-            console.log(filter);
-            
-            return filter;
-            
+            const filterOptions: any = {}
+
+            if(year) filterOptions.year = year
+            if(brand) filterOptions.brand = brand
+            if(stateVehicle) filterOptions.stateVehicle = stateVehicle
+            if(minPrice || maxPrice ){
+                filterOptions.price = {}
+                if(minPrice) filterOptions.price.$gte = Number(minPrice)
+                if(maxPrice) filterOptions.price.$lte = Number(maxPrice)
+            }
+
+            const vehicle = await VehiculoModel.find(filterOptions).populate({
+                path: 'reviews',
+                populate: {
+                    path: 'user',
+                    select: 'name -_id'
+                },
+                select:'-_id -__v'
+            })
+
+            return vehicle;
+
         } catch (error) {
             throw customErrors.internalServer(`${error}`)
         }
+
     }
 
     async searchVehicle(queryParams: any){
