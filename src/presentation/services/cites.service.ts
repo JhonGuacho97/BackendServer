@@ -32,4 +32,17 @@ export class CitesServices{
 
     }
 
+    async confirmCites(citeId: string){
+        try {
+            
+            const cite = await CitesModel.findByIdAndUpdate(citeId, {isConfirmed: true}, {new: true})
+            if(!cite) throw customErrors.badRequest('No se encuentra esta cita')
+
+            return cite;
+
+        } catch (error) {
+            throw customErrors.internalServer(`${error}`)
+        }
+    }
+
 }

@@ -14,6 +14,7 @@ export class reviewRoutes {
     const reviewServices = new ReviewServices();
     const controller = new ReviewController(reviewServices);
     
+    //Crear resenia para el vehiculo
      router.post('/:id', [AuthMiddleware.validateJWT], controller.createReviewVehicle)
 
     return router;

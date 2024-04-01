@@ -13,10 +13,17 @@ export class brandsRoutes {
     const brandServices = new BrandsServices();
     const controller = new BrandController(brandServices);
     
-    router.get('/', controller.getBrands);
+    //Crear marcas
     router.post('/',[AuthMiddleware.validateJWT], controller.createBrands);
-    router.delete('/:id', [AuthMiddleware.validateJWT], controller.deleteBrands);
+
+    //Traer todas las marcas
+    router.get('/', controller.getBrands);
+
+    //Actualizar marca por id
     router.put('/brand/:id', [AuthMiddleware.validateJWT], controller.updateBrands);
+
+    //Eliminar marca por id
+    router.delete('/:id', [AuthMiddleware.validateJWT], controller.deleteBrands);
 
     return router;
   }

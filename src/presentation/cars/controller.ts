@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { CreateVehicleDto, FiltersDto, customErrors } from "../../domain";
 import { VehicleServices } from "../services/product.service";
+import { UploadedFile } from "express-fileupload";
+import { FileUploadService } from "../services/file-upload.service";
 
 export class productsController {
   constructor(public readonly vehicleServices: VehicleServices) { }
@@ -16,14 +18,19 @@ export class productsController {
   };
  
   createProducts = async (req: Request, res: Response) => {
+    
     const [error, vehicleDto] = CreateVehicleDto.create({
       ...req.body,
-      user: req.body.user.id,
+      user: req.body.user.id
     });
     if (error) return res.status(400).json({ error });
 
+    const file = Array.isArray(req.files?.img)
+    ? req.files?.img
+    : [req.files?.img]
+
     this.vehicleServices
-      .createProducts(vehicleDto!)
+      .createProducts(vehicleDto!, file)
       .then((vehicle) => res.status(201).json(vehicle))
       .catch((error) => this.handleError(error, res));
   };
@@ -35,7 +42,7 @@ export class productsController {
       .catch((error) => this.handleError(error, res));
   };
 
-  getProductsByCategory = (req: Request, res: Response) => {
+  getProductsByBrand = (req: Request, res: Response) => {
 
     const idVehicle:string = req.params.id
 
@@ -47,9 +54,9 @@ export class productsController {
 
   deleteVehicle = async (req: Request, res: Response) => {
 
-    const id = req.params.id
+    const productId:string = req.params.id
 
-    this.vehicleServices.deleteVehicle(id)
+    this.vehicleServices.deleteVehicle(productId)
       .then((data) => res.json(data))
       .catch(error => this.handleError(error, res))
   }
@@ -69,16 +76,6 @@ export class productsController {
   }
 
 
-
-  // filterProduct = (req: Request, res: Response) => {
-  //   const year = req.params.year;
-  //   const brand = req.params.brand;
-  //   const state = req.params.state;
-  //   this.vehicleServices.filterVehicle(year, brand, state)
-  //     .then((data) => res.json(data))
-  //     .catch(error => this.handleError(error, res))
-  // };
-
   filtersQueryProducts = (req: Request, res: Response) => {
 
     const [error, filterDto] = FiltersDto.filter(req.query)
@@ -89,7 +86,7 @@ export class productsController {
     .catch(error => this.handleError(error, res))
 
   }
-
+ 
   searchsProducts = (req: Request, res: Response) => {
     
     const queryParams = req.params.key
@@ -99,4 +96,15 @@ export class productsController {
     .catch(error => this.handleError(error, res))
 
   }
+
+  getProductById = (req: Request, res: Response) => {
+
+    const { id } = req.params
+
+    this.vehicleServices.vehicleById(id)
+    .then((vehicle) => res.json(vehicle))
+    .catch(error => this.handleError(error, res))
+
+  }
+  
 }

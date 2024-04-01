@@ -17,9 +17,9 @@ export class CartShopController {
         console.log(`${error}`);
         
         return res.status(500).json({error: 'Internal Server Error'});
-    }
+    } 
 
-    createCartShop = async (req: Request, res: Response) => {
+    createCartShop = (req: Request, res: Response) => {
 
         const [error, cartDto] = CreateCartShopDto.create({
             ...req.body,
@@ -32,7 +32,7 @@ export class CartShopController {
         .catch(error => this.handleError(error, res));
 
     }
-
+ 
     getCartShop = (req: Request, res: Response) => {
 
         const idUser: string = req.body.user.id
@@ -41,6 +41,15 @@ export class CartShopController {
         .then((cart) => res.json(cart))
         .catch(error => this.handleError(error, res))
         
+    }
+
+    deleteItemCart = (req: Request, res: Response) => {
+
+        const idCartItem:string = req.params.cartItem
+
+        this.cartshopServide.deleteAndUpdateCart(idCartItem)
+        .then((cart) => res.json(cart))
+        .catch(error => this.handleError(error, res))
     }
 
 }

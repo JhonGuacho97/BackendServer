@@ -6,7 +6,7 @@ import { CreateCategoryDto, UserEntity, customErrors } from "../../domain";
  export class CategoryService{
     
     constructor(){}
-
+ 
      async createCategory(createCategoryDto: CreateCategoryDto, user:UserEntity){
 
         const categoryExist = await categoryModel.findOne({name: createCategoryDto.name});

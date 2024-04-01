@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
 const vehiculoSchema = new mongoose.Schema({
+ 
   avaliable: {
     type: Boolean,
     default: false,
@@ -39,13 +40,52 @@ const vehiculoSchema = new mongoose.Schema({
 
   description: {
     type: String,
-    sparse: true,
+    sparse: true, 
   },
 
-  img: {
+  glasses : {
     type: String,
-    sparse: true,
+    default: 'No especificado'
   },
+
+  typeDirection: {
+    type:String,
+    default: 'Hidraulica'
+  },
+
+  typeMotor: {
+    type: String,
+    default: 'No especificado'
+  },
+
+  typeCombustible: {
+    type:String,
+    default: 'No especificado'
+  },
+
+  climatization:{
+    type: String,
+    default: 'No especificado'
+  },
+
+  motor: {
+    type: String,
+    default: 'No especificado'
+  },
+
+  tapized: {
+    type: String,
+    default: 'Tela'
+  },
+
+  placa: {
+    type:String,
+    default: 'No especificado'
+  },
+
+  img: [{
+    type: String
+}],
 
   user: {
     type: Schema.Types.ObjectId,

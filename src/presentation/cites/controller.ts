@@ -32,4 +32,14 @@ export class CitesController{
 
     }
 
+    confirmedCites = (req: Request, res: Response) => {
+
+        const citesId:string = req.params.id
+
+        this.citesServices.confirmCites(citesId)
+        .then((data) => res.json(data))
+        .catch(error => this.handleError(error, res))
+
+    }
+
 }

@@ -6,13 +6,14 @@ import { brandsRoutes } from './brands/routes';
 import { cartShopRoutes } from './cart/routes';
 import { reviewRoutes } from './review/routes';
 import { citesRoutes } from './cites/routes';
+import { ImagesRoute } from './images/routes';
 
 
 
 
-export class AppRoutes {
+export class AppRoutes { 
 
- 
+  
   static get routes(): Router {
 
     const router = Router();
@@ -24,6 +25,7 @@ export class AppRoutes {
      router.use('/api/cartshop', cartShopRoutes.routes);
      router.use('/api/reviews', reviewRoutes.routes);
      router.use('/api/cites', citesRoutes.routes);
+     router.use('/api/images', ImagesRoute.routes);
 
     return router;
   }

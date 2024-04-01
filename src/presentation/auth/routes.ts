@@ -15,10 +15,14 @@ export class Authroutes {
 
     const controller = new AuthController(authService);
     
-    router.post('/login', controller.loginUser);
+    //Registro de usuario
     router.post('/register', controller.register);
+
+    //Login de usuario
+    router.post('/login', controller.loginUser);
     
-    //router.get('/validate-email/:token', controller.validateEmail)
+    //Validar Email
+    router.get('/validate-email/:token', controller.validateEmail)
 
     return router;
   }

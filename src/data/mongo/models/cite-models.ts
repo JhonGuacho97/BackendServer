@@ -13,6 +13,11 @@ const CitesSchema = new mongoose.Schema({
         required: true
     },
 
+    isConfirmed: {
+        type: Boolean,
+        default: false
+    },
+
     user:{
         type: Schema.Types.ObjectId,
         ref: 'User'

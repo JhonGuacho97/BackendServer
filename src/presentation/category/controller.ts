@@ -7,7 +7,7 @@ export class categoryController {
 
     constructor( 
         public readonly categoryService: CategoryService
-    ){}
+    ){} 
 
 
     private handleError = (error: unknown, res:Response) => {

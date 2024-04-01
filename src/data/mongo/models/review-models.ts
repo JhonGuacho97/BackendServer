@@ -7,6 +7,12 @@ const ReviewSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
+
+    vehicle: {
+        type: Schema.Types.ObjectId,
+        ref: 'Vehicle',
+        required: true
+    },
     
     rating: {
         type: Number,
